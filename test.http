@@ -1,0 +1,89 @@
+# Набор тестов для эндпоинтов которые можно запустить
+# в VSCode с помощью плагина  REST Client
+# Найти можно по идентификатору: humao.rest-client
+# Tunder Client не позволяет свободно импортировать-экспортировать записи,
+# поэтому перешел на этот плагин. Он тоже хорош :-)
+
+# Создаем книгу
+POST http://localhost:8000/api/v1/books/ HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Wrong Code",
+    "author": "Robert Martin",
+    "pages": 104,
+    "year": 2007,
+    "seller_id": 14
+}
+
+###
+
+# Получаем список книг
+GET http://localhost:8000/api/v1/books/ HTTP/1.1
+
+###
+
+# Получаем одну книгу по ее ИД
+GET http://localhost:8000/api/v1/books/1 HTTP/1.1
+
+###
+
+# Обновляем поля в данных о книге
+PUT http://localhost:8000/api/v1/books/17 HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Clean Code",
+    "author": "Robert Martin",
+    "count_pages": 10,
+    "year": 2007,
+    "id": 0
+}
+
+###
+
+# Удаляем книгу
+DELETE http://localhost:8000/api/v1/books/1 HTTP/1.1
+content-type: application/json
+
+###
+
+# Создаем продавца
+POST http://localhost:8000/api/v1/seller/ HTTP/1.1
+content-type: application/json
+
+{
+    "first_name": "Wrong Code",
+    "last_name": "Robert Martin",
+    "email": "gasgsag",
+    "password": "2007"
+}
+
+###
+
+# Получаем одного продавца по его ИД
+GET http://localhost:8000/api/v1/seller/14 HTTP/1.1
+
+###
+
+# Получаем список продавца
+GET http://localhost:8000/api/v1/seller/ HTTP/1.1
+
+###
+
+# Удаляем продавца
+DELETE http://localhost:8000/api/v1/seller/1 HTTP/1.1
+content-type: application/json
+
+###
+
+# Обновляем поля в данных о продавце
+PUT http://localhost:8000/api/v1/seller/1 HTTP/1.1
+content-type: application/json
+
+{
+    "first_name": "Clean Code",
+    "last_name": "Robert Martin",
+    "email": "norm@mail.ru",
+    "id": 1
+}
