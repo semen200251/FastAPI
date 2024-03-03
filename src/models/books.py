@@ -10,5 +10,5 @@ class Book(BaseModel):
     author: Mapped[str] = mapped_column(String(100), nullable=False)
     year: Mapped[int]
     count_pages: Mapped[int]
-    seller_fk: Mapped[int] = mapped_column(ForeignKey('selers_table.id'))
-    seller_id: Mapped["Seller"] = relationship(back_populates="books", uselist=False)
+    seller_id: Mapped[int] = mapped_column(ForeignKey('selers_table.id'))
+    seller: Mapped["Seller"] = relationship(back_populates="books", uselist=False)

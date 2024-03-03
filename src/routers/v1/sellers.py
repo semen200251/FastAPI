@@ -16,21 +16,21 @@ sellers_router = APIRouter(
 DBSession = Annotated[AsyncSession, Depends(get_async_session)]
 
 @sellers_router.post("/", response_model=ReturnedSeller, status_code=status.HTTP_201_CREATED)
-async def create_book(seller: IncomingSeller, session: DBSession):
+async def create_seller(seller: IncomingSeller, session: DBSession):
     new_seller = Seller(first_name = seller.first_name, last_name = seller.last_name, email = seller.email, password = seller.password)
     session.add(new_seller)
     await session.flush()
     return new_seller
 
 @sellers_router.get("/", response_model=ReturnedAllSellers)
-async def get_all_books(session: DBSession):
+async def get_all_sellers(session: DBSession):
     query = select(Seller)
     res = await session.execute(query)
     sellers = res.scalars().all()
     return {"sellers": sellers}
 
 @sellers_router.get("/{seller_id}", response_model=ReturnedSellerWithBook)
-async def get_book(seller_id: int, session: DBSession):
+async def get_seller(seller_id: int, session: DBSession):
     seller = await session.execute(
         select(Seller).options(selectinload(Seller.books)).filter(Seller.id == seller_id)
     )
@@ -39,7 +39,7 @@ async def get_book(seller_id: int, session: DBSession):
     return seller
 
 @sellers_router.delete("/{seller_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_book(seller_id: int, session: DBSession):
+async def delete_seller(seller_id: int, session: DBSession):
     # Загружаем продавца с предварительной загрузкой связанных книг
     deleted_seller = await session.execute(
         select(Seller).options(selectinload(Seller.books)).filter(Seller.id == seller_id)
@@ -58,8 +58,8 @@ async def delete_book(seller_id: int, session: DBSession):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@sellers_router.put("/{seller_id}")
-async def update_book(seller_id: int, new_data: IncomingUpdateSeller, session: DBSession):
+@sellers_router.put("/{seller_id}", response_model=ReturnedSeller)
+async def update_seller(seller_id: int, new_data: IncomingUpdateSeller, session: DBSession):
     # Оператор "морж", позволяющий одновременно и присвоить значение и проверить его.
     if updated_seller := await session.get(Seller, seller_id):
         updated_seller.first_name = new_data.first_name

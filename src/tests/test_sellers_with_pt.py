@@ -58,9 +58,9 @@ async def test_get_single_seller(db_session, async_client):
     db_session.add_all([seller, seller2])
     await db_session.flush()
 
-    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_fk=seller.id)
-    book_2 = books.Book(author="Lermontov", title="Mziri", year=1997, count_pages=104, seller_fk=seller.id)
-    book_3 = books.Book(author="Lermontov2", title="Mziri2", year=1997, count_pages=104, seller_fk=seller2.id)
+    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_id=seller.id)
+    book_2 = books.Book(author="Lermontov", title="Mziri", year=1997, count_pages=104, seller_id=seller.id)
+    book_3 = books.Book(author="Lermontov2", title="Mziri2", year=1997, count_pages=104, seller_id=seller2.id)
     db_session.add_all([book, book_2, book_3])
     await db_session.flush()
     books_list = []
@@ -93,8 +93,8 @@ async def test_delete_seller(db_session, async_client):
     db_session.add_all([seller])
     await db_session.flush()
 
-    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_fk=seller.id)
-    book_2 = books.Book(author="Pushkin2", title="Eugeny Onegin2", year=2001, count_pages=104, seller_fk=seller.id)
+    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_id=seller.id)
+    book_2 = books.Book(author="Pushkin2", title="Eugeny Onegin2", year=2001, count_pages=104, seller_id=seller.id)
     db_session.add_all([book, book_2])
     await db_session.flush()
 
@@ -119,7 +119,7 @@ async def test_update_seller(db_session, async_client):
     await db_session.flush()
 
 
-    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_fk=seller.id)
+    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_id=seller.id)
 
     db_session.add(book)
     await db_session.flush()
@@ -129,8 +129,8 @@ async def test_update_seller(db_session, async_client):
         json={ "first_name": "Clean Code",
                 "last_name": "Robert Martin",
                 "email": "norm@mail.ru",
-                "id": 3,
-                "password": "5125"},
+                "id": 3
+                },
     )
 
     assert response.status_code == status.HTTP_200_OK

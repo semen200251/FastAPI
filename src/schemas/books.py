@@ -2,7 +2,7 @@ from pydantic import BaseModel, field_validator, ValidationError, Field
 from pydantic_core import PydanticCustomError
 
 
-__all__ = ["IncomingBook", "ReturnedBook", "ReturnedAllBooks"]
+__all__ = ["IncomingBook", "ReturnedBook", "ReturnedAllBooks", "ReturnedBookForSeller"]
 
 class BaseBook(BaseModel):
     title: str
@@ -12,7 +12,7 @@ class BaseBook(BaseModel):
 class IncomingBook(BaseBook):
     year: int = 2024
     count_pages: int = Field(alias="pages", default=300)
-    seller_fk: int
+    seller_id: int
     @field_validator("year")
     @staticmethod
     def validate_year(val: int):
@@ -21,7 +21,7 @@ class IncomingBook(BaseBook):
         return val
 
 class ReturnedBook(BaseBook):
-    seller_fk: int
+    seller_id: int
     id: int
     count_pages: int
 

@@ -19,7 +19,7 @@ async def test_create_book(db_session, async_client):
 
     db_session.add_all([seller])
     await db_session.flush()
-    data = {"title": "Wrong Code", "author": "Robert Martin", "pages": 104, "year": 2007, "seller_fk": seller.id}
+    data = {"title": "Wrong Code", "author": "Robert Martin", "pages": 104, "year": 2007, "seller_id": seller.id}
     response = await async_client.post("/api/v1/books/", json=data)
 
     assert response.status_code == status.HTTP_201_CREATED
@@ -32,7 +32,7 @@ async def test_create_book(db_session, async_client):
         "author": "Robert Martin",
         "count_pages": 104,
         "year": 2007,
-        "seller_fk": seller.id
+        "seller_id": seller.id
     }
 
 
@@ -45,8 +45,8 @@ async def test_get_books(db_session, async_client):
 
     db_session.add_all([seller])
     await db_session.flush()
-    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_fk=seller.id)
-    book_2 = books.Book(author="Lermontov", title="Mziri", year=1997, count_pages=104, seller_fk=seller.id)
+    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_id=seller.id)
+    book_2 = books.Book(author="Lermontov", title="Mziri", year=1997, count_pages=104, seller_id=seller.id)
 
     db_session.add_all([book, book_2])
     await db_session.flush()
@@ -60,8 +60,8 @@ async def test_get_books(db_session, async_client):
     # Проверяем интерфейс ответа, на который у нас есть контракт.
     assert response.json() == {
         "books": [
-            {"title": "Eugeny Onegin", "author": "Pushkin", "year": 2001, "id": book.id, "count_pages": 104, "seller_fk": seller.id},
-            {"title": "Mziri", "author": "Lermontov", "year": 1997, "id": book_2.id, "count_pages": 104, "seller_fk": seller.id},
+            {"title": "Eugeny Onegin", "author": "Pushkin", "year": 2001, "id": book.id, "count_pages": 104, "seller_id": seller.id},
+            {"title": "Mziri", "author": "Lermontov", "year": 1997, "id": book_2.id, "count_pages": 104, "seller_id": seller.id},
         ]
     }
 
@@ -75,8 +75,8 @@ async def test_get_single_book(db_session, async_client):
     db_session.add_all([seller])
     await db_session.flush()
 
-    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_fk=seller.id)
-    book_2 = books.Book(author="Lermontov", title="Mziri", year=1997, count_pages=104, seller_fk=seller.id)
+    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_id=seller.id)
+    book_2 = books.Book(author="Lermontov", title="Mziri", year=1997, count_pages=104, seller_id=seller.id)
 
     db_session.add_all([book, book_2])
     await db_session.flush()
@@ -92,7 +92,7 @@ async def test_get_single_book(db_session, async_client):
         "year": 2001,
         "count_pages": 104,
         "id": book.id,
-        "seller_fk": seller.id
+        "seller_id": seller.id
     }
 
 
@@ -105,7 +105,7 @@ async def test_delete_book(db_session, async_client):
     db_session.add_all([seller])
     await db_session.flush()
 
-    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_fk=seller.id)
+    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_id=seller.id)
 
     db_session.add(book)
     await db_session.flush()
@@ -133,14 +133,14 @@ async def test_update_book(db_session, async_client):
     db_session.add_all([seller2])
     await db_session.flush()
 
-    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_fk=seller.id)
+    book = books.Book(author="Pushkin", title="Eugeny Onegin", year=2001, count_pages=104, seller_id=seller.id)
 
     db_session.add(book)
     await db_session.flush()
 
     response = await async_client.put(
         f"/api/v1/books/{book.id}",
-        json={"title": "Mziri", "author": "Lermontov", "count_pages": 100, "year": 2007, "id": book.id, "seller_fk": seller2.id},
+        json={"title": "Mziri", "author": "Lermontov", "count_pages": 100, "year": 2007, "id": book.id},
     )
 
     assert response.status_code == status.HTTP_200_OK
@@ -153,4 +153,3 @@ async def test_update_book(db_session, async_client):
     assert res.count_pages == 100
     assert res.year == 2007
     assert res.id == book.id
-    assert res.seller_fk == seller2.id

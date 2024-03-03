@@ -11,4 +11,4 @@ class Seller(BaseModel):
     email: Mapped[str] = mapped_column(String(50), nullable=False)
     password: Mapped[str] = mapped_column(String(50), nullable=False)
 
-    books: Mapped[list["Book"]] = relationship("Book", back_populates="seller_id", uselist=True)
+    books: Mapped[list["Book"]] = relationship(back_populates="seller", uselist=True)

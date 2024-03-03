@@ -13,7 +13,7 @@ content-type: application/json
     "author": "Robert Martin",
     "pages": 104,
     "year": 2007,
-    "seller_fk": 4
+    "seller_id": 14
 }
 
 ###
@@ -29,7 +29,7 @@ GET http://localhost:8000/api/v1/books/1 HTTP/1.1
 ###
 
 # Обновляем поля в данных о книге
-PUT http://localhost:8000/api/v1/books/1 HTTP/1.1
+PUT http://localhost:8000/api/v1/books/17 HTTP/1.1
 content-type: application/json
 
 {
@@ -37,8 +37,7 @@ content-type: application/json
     "author": "Robert Martin",
     "count_pages": 10,
     "year": 2007,
-    "id": 0,
-    "seller_fk": 2
+    "id": 0
 }
 
 ###
@@ -63,7 +62,7 @@ content-type: application/json
 ###
 
 # Получаем одного продавца по его ИД
-GET http://localhost:8000/api/v1/seller/2 HTTP/1.1
+GET http://localhost:8000/api/v1/seller/14 HTTP/1.1
 
 ###
 
@@ -79,13 +78,12 @@ content-type: application/json
 ###
 
 # Обновляем поля в данных о продавце
-PUT http://localhost:8000/api/v1/seller/2 HTTP/1.1
+PUT http://localhost:8000/api/v1/seller/1 HTTP/1.1
 content-type: application/json
 
 {
     "first_name": "Clean Code",
     "last_name": "Robert Martin",
     "email": "norm@mail.ru",
-    "id": 1,
-    "password": "5125"
+    "id": 1
 }

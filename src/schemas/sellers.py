@@ -12,7 +12,7 @@ class BaseSeller(BaseModel):
 class IncomingSeller(BaseSeller):
     password: str
 
-class IncomingUpdateSeller(IncomingSeller):
+class IncomingUpdateSeller(BaseSeller):
     id: int
 
 class ReturnedSeller(BaseSeller):
